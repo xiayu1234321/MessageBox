@@ -1,0 +1,52 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.15.RELEASE'
+		springCloudVersion = 'Edgware.SR4'
+
+	}
+	repositories {
+		maven { url "http://192.168.17.247:8081/nexus/content/groups/public/" }
+		//mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+sourceCompatibility = 1.8
+
+repositories {
+	maven { url "http://192.168.17.247:8081/nexus/content/groups/public/" }
+	//mavenCentral()
+}
+
+
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-amqp', version: '1.4.2.RELEASE'
+	compile("org.springframework.boot:spring-boot-starter-web"){
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+	}
+	compile("org.springframework.boot:spring-boot-starter-undertow")
+	//actuator监控
+	compile("org.springframework.boot:spring-boot-starter-actuator")
+	//druid连接池
+	compile group: 'com.alibaba', name: 'druid', version:'1.0.29'
+	//mysqljar
+	compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile("org.springframework.boot:spring-boot-starter-cache")
+	compile("org.springframework.boot:spring-boot-starter-data-jpa")
+	//JSON框架
+	compile group: 'com.alibaba', name: 'fastjson', version: '1.2.28'
+	compile group: 'com.rabbitmq', name: 'amqp-client', version: '5.2.0'
+	compile group: 'dmdb', name: 'hibernate', version: '4'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
